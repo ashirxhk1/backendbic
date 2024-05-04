@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 const evaluation = mongoose.Schema({
+    owner:{type: mongoose.Schema.Types.ObjectId,
+        ref: "users"},
     useremail:{type:String,required:[true, "field is require"]},
     leadID:{type:String,required:[true, "field is require"]},
     agentName:{type:String,required:[true, "field is require"]},

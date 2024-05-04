@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 const escalation = mongoose.Schema({
+    owner:{type: mongoose.Schema.Types.ObjectId,
+        ref: "users"},
     useremail:{type:String,required:[true, "field is require"]},
     leadID:{type:String,required:[true, "field is require"]},
     evaluatedby:{type:String,required:[true, "field is require"]},
