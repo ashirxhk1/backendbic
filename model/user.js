@@ -10,15 +10,18 @@ const users = mongoose.Schema({
         required: [true, "Please provide a password!"],
         unique: false,
       },
-    evaluationdetail: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Evaluation"
-    }],
-
-    escalationdetail: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Escalation"
-    }]
+    evaluationdetail: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "evaluation"
+        }
+    ],
+    escalationdetail: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "escalation"
+        }
+    ]
 })
 
 module.exports = mongoose.model('users',users)
