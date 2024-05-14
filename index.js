@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require("mongoose")
-const {userRegister,login} = require('./controller/users')
+const {userRegister,login,logout} = require('./controller/users')
 const {escalation} = require("./controller/escalation")
 const {evaluation} = require("./controller/evaluation")
 const {auth} = require('./middleware/auth')
@@ -22,6 +22,7 @@ app.use(cors())
 
 app.post("/register",userRegister)
 app.post("/login",login)
+app.get('/logout',auth,logout)
 app.post('/createEscalation',auth,escalation)
 app.post('/createEvaluation',auth,evaluation)
 
