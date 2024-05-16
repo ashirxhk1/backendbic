@@ -19,7 +19,7 @@ exports.evaluation = async(req,res) => {
         }
         const details = await evaluationModel(data)
         await details.save()
-        res.status(202).json({details,message:"created!"})
+        res.status(202).json({details,message:"created!",success:true})
 
     }catch(error){
         console.error('Error during login:', error);

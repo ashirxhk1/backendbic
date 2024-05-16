@@ -23,42 +23,61 @@ const escalation = mongoose.Schema({
     teamleader: {
         type: String
     },
-    leadsource: [{
-        source: {
-            type: String,
-            required: true
-        }
-    }],
-    leadstatus: [{
-        status: {
-            type: String,
-            required: true
-        }
-    }],
-    escalationseverity: [{
-        severity: {
-            type: String,
-            required: true
-        }
-    }],
-    issueidentification: [{
-        identify: {
-            type: String,
-            required: true
-        }
-    }],
-    escalationaction: [{
-        action: {
-            type: String,
-            required: true
-        }
-    }],
-    additionalsuccessrmation: [{
-        summary: {
-            type: String,
-            required: true
-        }
-    }]
+    leadsource: {
+        type: String
+    },
+    leadstatus: {
+        type: String
+    },
+    escalationseverity:{
+        type: String
+    },
+    issueidentification:{
+        type: String
+    },
+    escalationaction:{
+        type:String
+    },
+    additionalsuccessrmation:{
+        type:String
+    }
 })
 
 module.exports = mongoose.model('escalation',escalation)
+
+// leadsource: [{
+//     source: {
+//         type: String,
+//         required: true
+//     }
+// }],
+// leadstatus: [{
+//     status: {
+//         type: String,
+//         required: true
+//     }
+// }],
+// escalationseverity: [{
+//     severity: {
+//         type: String,
+//         required: true
+//     }
+// }],
+// issueidentification: [{
+//     identify: {
+//         type: String,
+//         required: true
+//     }
+// }],
+// escalationaction: [{
+//     action: {
+//         type: String,
+//         required: true
+//     }
+// }],
+// additionalsuccessrmation: [{
+//     summary: {
+//         type: String,
+//         required: true
+//     }
+// }]
