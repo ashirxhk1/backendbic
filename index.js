@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require("mongoose")
-const {userRegister,login,logout} = require('./controller/users')
+const {userRegister,login,logout,addLeader,deleteLeader,fetchTeamLead} = require('./controller/users')
 const {escalation} = require("./controller/escalation")
 const {evaluation} = require("./controller/evaluation")
 const {auth} = require('./middleware/auth')
@@ -25,6 +25,9 @@ app.post("/login",login)
 app.get('/logout',auth,logout)
 app.post('/createEscalation',auth,escalation)
 app.post('/createEvaluation',auth,evaluation)
+app.post('/createteamLeaders',auth,addLeader)
+app.delete('/leaddelete/:id',auth,deleteLeader)
+app.get('/fetchleaders',auth,fetchTeamLead)
 
 app.get("/test",(req,res) =>{
     res.status({message:"test!"})
