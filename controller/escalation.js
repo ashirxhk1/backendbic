@@ -1,6 +1,7 @@
 const escalationModel = require("../model/Escalation") 
+const userModel = require('../model/user')
 
-exports.escalation = async(req,res) => {
+exports.escalation = async (req,res) => {
     try{
         const data = {
             owner:req.user._id,
@@ -16,9 +17,14 @@ exports.escalation = async(req,res) => {
             escalationaction:req.body.escAction,
             additionalsuccessrmation:req.body.successmaration
         }
-        const details = await escalationModel(data)
-        await details.save()
-        res.status(202).json({details,message:"created!",success:true})
+        const escalation = new escalationModel(data)
+        await escalation.save()
+
+        await userModel.findByIdAndUpdate(req.user._id, {
+            $push: { escalationdetail: escalation._id } 
+        });
+
+        res.status(202).json({escalation,message:"created!",success:true})
     }catch(error){
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Internal server error' });
