@@ -41,6 +41,12 @@ const escalation = new mongoose.Schema({
     },
     additionalsuccessrmation:{
         type:String
+    },
+    userrating:{
+        type:String
+    },
+    audio:{
+        type:String
     }
 })
 

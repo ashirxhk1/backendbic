@@ -11,6 +11,9 @@ const users = new mongoose.Schema({
         required: [true, "Please provide a password!"],
         unique:false,
     },
+    name:{
+        type: String
+    },
     role:{
         type: String
     },

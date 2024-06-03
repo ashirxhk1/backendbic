@@ -7,7 +7,8 @@ exports.userRegister=async(req,res) =>{
         const data = {
             email:req.body.email,
             password:req.body.password,
-            role:req.body.role
+            role:req.body.role,
+            name:req.body.name
         }
         const details = await User(data)
         await details.save()
@@ -46,6 +47,29 @@ exports.fetchUser = async (req,res) => {
         res.status(200).json({user,success:true})
     }catch(error){
         console.error('Error during login:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+exports.fetchUserById = async (req,res) => {
+    try{
+        const userId = req.params.id
+        const user = await User.findById(userId).select('-password').populate('escalationdetail')
+        .populate('evaluationRating');
+        const counts = {
+            average: 0,
+            good: 0,
+            bad: 0,
+            total:0
+        };
+
+        user.escalationdetail.forEach(entry => {
+            counts[entry.userrating]++;
+            counts['total']=counts.average+counts.good+counts.bad
+        });
+        counts['total'] = counts.average+counts.good+counts.bad
+        res.status(200).json({user,counts,success:true})
+    }catch(error){
         res.status(500).json({ message: 'Internal server error' });
     }
 }

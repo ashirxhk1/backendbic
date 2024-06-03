@@ -15,7 +15,9 @@ exports.escalation = async (req,res) => {
             escalationseverity:req.body.escSeverity,
             issueidentification:req.body.issueIden,
             escalationaction:req.body.escAction,
-            additionalsuccessrmation:req.body.successmaration
+            additionalsuccessrmation:req.body.successmaration,
+            userrating:req.body.userrating,
+            audio:req.file.path
         }
         const escalation = new escalationModel(data)
         await escalation.save()
@@ -30,3 +32,4 @@ exports.escalation = async (req,res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
