@@ -7,6 +7,7 @@ exports.userRegister=async(req,res) =>{
         const data = {
             email:req.body.email,
             password:req.body.password,
+            role:req.body.role
         }
         const details = await User(data)
         await details.save()
@@ -34,6 +35,16 @@ exports.login = async (req,res) => {
         )
         res.status(200).json({ message: 'Login successful', user,token,success:true});
     } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+exports.fetchUser = async (req,res) => {
+    try{
+        const user  = await User.find({role:{$ne:'admin'}}).select('-password').populate('evaluationRating')
+        res.status(200).json({user,success:true})
+    }catch(error){
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Internal server error' });
     }

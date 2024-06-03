@@ -1,8 +1,9 @@
 const mongoose = require("mongoose")
-const evaluation = mongoose.Schema({
+const evaluation = new mongoose.Schema({
     owner:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users"
+        ref: "User",
+        required: true
     },
     useremail:{
         type:String,
@@ -46,7 +47,7 @@ const evaluation = mongoose.Schema({
         type:String
     }
 })
-module.exports = mongoose.model('evaluation',evaluation)
+module.exports = mongoose.model('Evaluation',evaluation)
 
 // greetings:[{
 //     greet:{

@@ -1,8 +1,9 @@
 const mongoose = require("mongoose")
-const escalation = mongoose.Schema({
+const escalation = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     },
     useremail: {
         type: String,
@@ -43,7 +44,7 @@ const escalation = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('escalation',escalation)
+module.exports = mongoose.model('Escalation',escalation)
 
 // leadsource: [{
 //     source: {

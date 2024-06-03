@@ -1,4 +1,6 @@
 const evaluationModel = require("../model/Evaluation") 
+const userModel = require("../model/user")
+const evaluationRating = require('../model/rating')
 
 exports.evaluation = async(req,res) => {
     try{
@@ -17,9 +19,25 @@ exports.evaluation = async(req,res) => {
             bonus:req.body.bonus,
             evaluationsummary:req.body.evaluationsummary
         }
-        const details = await evaluationModel(data)
-        await details.save()
-        res.status(202).json({details,message:"created!",success:true})
+        const evaluation = new evaluationModel(data)
+        await evaluation.save()
+
+        await userModel.findByIdAndUpdate(req.user._id, {
+            $push: { evaluationdetail: evaluation._id }
+        });
+
+        const evaluationRate = new evaluationRating({
+            owner:req.user._id,
+            evaluatedRating:evaluation._id,
+            rating: req.body.rating
+        })
+        await evaluationRate.save()
+
+        await userModel.findByIdAndUpdate(req.user._id,{
+            $push : {evaluationRating: evaluationRate._id}
+        })
+
+        res.status(202).json({evaluation,message:"created!",success:true})
 
     }catch(error){
         console.error('Error during login:', error);

@@ -1,27 +1,37 @@
 const mongoose = require("mongoose")
-const users = mongoose.Schema({
+
+const users = new mongoose.Schema({
     email: {
         type: String,
         required: [true, "Please provide an email"],
         unique: [true, "email already exists"],
-      },
-      password: {
+    },
+    password: {
         type: String,
         required: [true, "Please provide a password!"],
-        unique: false,
-      },
+        unique:false,
+    },
+    role:{
+        type: String
+    },
     evaluationdetail: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "evaluation"
+            ref: "Evaluation"
+        }
+    ],
+    evaluationRating: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Rating"
         }
     ],
     escalationdetail: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "escalation"
+            ref: "Escalation"
         }
     ]
 })
 
-module.exports = mongoose.model('users',users)
+module.exports = mongoose.model('User',users)
