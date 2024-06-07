@@ -17,8 +17,12 @@ exports.escalation = async (req,res) => {
             escalationaction:req.body.escAction,
             additionalsuccessrmation:req.body.successmaration,
             userrating:req.body.userrating,
-            audio:req.file.path
         }
+
+        if (req.file) {
+            data.audio = req.file.path;
+        }
+
         const escalation = new escalationModel(data)
         await escalation.save()
 
