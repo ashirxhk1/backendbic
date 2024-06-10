@@ -8,6 +8,7 @@ const {auth} = require('./middleware/auth')
 const parser = require("cookie-parser")
 const cors = require("cors")
 const multer  = require('multer')
+const path = require('path');
 // const upload = multer({ dest: 'uploads/' })
 
 require("dotenv").config()
@@ -44,6 +45,13 @@ app.delete('/leaddelete/:id',auth,deleteLeader)
 app.get('/fetchleaders',auth,fetchTeamLead)
 app.get('/fetchuserbyid/:id',fetchUserById)
 
+app.get('/:filename', (req, res) => {
+    const file = path.join(__dirname, 'uploads', req.params.filename);
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.sendFile(file);
+});
+
+  
 // app.post('/upload',upload.single('agentaudio'),(req,res)=>{
 //     console.log(req.body);
 //     console.log(req.file);
