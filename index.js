@@ -45,11 +45,11 @@ app.delete('/leaddelete/:id',auth,deleteLeader)
 app.get('/fetchleaders',auth,fetchTeamLead)
 app.get('/fetchuserbyid/:id',fetchUserById)
 
-app.get('/:filename', (req, res) => {
-    const file = path.join(__dirname, 'uploads', req.params.filename);
-    res.setHeader('Content-Type', 'audio/mpeg');
-    res.sendFile(file);
-});
+// app.get('/:filename', (req, res) => {
+//     const file = path.join(__dirname, 'uploads', req.params.filename);
+//     res.setHeader('Content-Type', 'audio/mpeg');
+//     res.sendFile(file);
+// });
 
   
 // app.post('/upload',upload.single('agentaudio'),(req,res)=>{
@@ -57,7 +57,15 @@ app.get('/:filename', (req, res) => {
 //     console.log(req.file);
 // })
 app.get("/test",(req,res) =>{
-    res.status({message:"test!"})
+    res.status(202).json({message:"test!"})
+})
+
+app.get("/",(req,res) =>{
+    try{
+        res.status(202).json({message:"listening!"})
+    }catch(err){
+        res.status(500).json({message:err})
+    }
 })
 
 app.listen(8000,()=>{

@@ -23,10 +23,10 @@ exports.login = async (req,res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'User not found',success:false });
         }
         if (user.password !== password) {
-            return res.status(401).json({ message: 'Invalid password' });
+            return res.status(401).json({ message: 'Invalid password',success:false});
         }
         const token = jwt.sign({
             _id: user._id,
