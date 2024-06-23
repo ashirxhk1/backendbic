@@ -60,6 +60,11 @@ app.get("/test",(req,res) =>{
     res.status({message:"test!"})
 })
 
+app.use(express.static(path.join(__dirname,'..','bicdashboard','build')))
+app.get('*',(req,res) => {
+    res.sendFile(path.join(__dirname,'..','bicdashboard','build','index.html'))
+})
+
 app.listen(8000,()=>{
     console.log('server is running')
 })
