@@ -34,18 +34,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.post("/register",userRegister)
-app.post("/login",login)
-app.get('/getallusers',auth,fetchUser)
-app.get('/logout',auth,logout)
-app.post('/createEscalation',upload.single('audio'),auth,escalation)
-app.post('/createEvaluation',auth,evaluation)
-app.post('/createteamLeaders',auth,addLeader)
-app.delete('/leaddelete/:id',auth,deleteLeader)
-app.get('/fetchleaders',auth,fetchTeamLead)
-app.get('/fetchuserbyid/:id',fetchUserById)
+app.post("/api/register",userRegister)
+app.post("/api/login",login)
+app.get('/api/getallusers',auth,fetchUser)
+app.get('/api/logout',auth,logout)
+app.post('/api/createEscalation',upload.single('audio'),auth,escalation)
+app.post('/api/createEvaluation',auth,evaluation)
+app.post('/api/createteamLeaders',auth,addLeader)
+app.delete('/api/leaddelete/:id',auth,deleteLeader)
+app.get('/api/fetchleaders',auth,fetchTeamLead)
+app.get('/api/fetchuserbyid/:id',fetchUserById)
 
-app.get('/:filename', (req, res) => {
+app.get('/api/:filename', (req, res) => {
     const file = path.join(__dirname, 'uploads', req.params.filename);
     res.setHeader('Content-Type', 'audio/mpeg');
     res.sendFile(file);
