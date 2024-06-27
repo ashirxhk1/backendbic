@@ -57,13 +57,13 @@ app.get('/:filename', (req, res) => {
 //     console.log(req.file);
 // })
 app.get("/test",(req,res) =>{
-    res.status({message:"test!"})
+    res.status(201).json({message:"test!"})
 })
 
-app.use(express.static(path.join(__dirname,'..','bicdashboard','build')))
-app.get('*',(req,res) => {
-    res.sendFile(path.join(__dirname,'..','bicdashboard','build','index.html'))
-})
+// app.use(express.static(path.join(__dirname,'..','bicdashboard','build')))
+// app.get('*',(req,res) => {
+//     res.sendFile(path.join(__dirname,'..','bicdashboard','build','index.html'))
+// })
 
 app.listen(8000,()=>{
     console.log('server is running')
