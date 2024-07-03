@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require("mongoose")
-const {userRegister,login,logout,addLeader,deleteLeader,fetchTeamLead,fetchUser,fetchUserById} = require('./controller/users')
+const {userRegister,login,logout,addLeader,deleteLeader,fetchTeamLead,fetchUser,fetchUserById,getUserDetails} = require('./controller/users')
 const {escalation} = require("./controller/escalation")
 const {evaluation} = require("./controller/evaluation")
 const {auth} = require('./middleware/auth')
@@ -44,12 +44,13 @@ app.post('/createteamLeaders',auth,addLeader)
 app.delete('/leaddelete/:id',auth,deleteLeader)
 app.get('/fetchleaders',auth,fetchTeamLead)
 app.get('/fetchuserbyid/:id',fetchUserById)
+app.get('/getuserdata/:name',auth,getUserDetails)
 
-app.get('/:filename', (req, res) => {
-    const file = path.join(__dirname, 'uploads', req.params.filename);
-    res.setHeader('Content-Type', 'audio/mpeg');
-    res.sendFile(file);
-});
+// app.get('/:filename', (req, res) => {
+//     const file = path.join(__dirname, 'uploads', req.params.filename);
+//     res.setHeader('Content-Type', 'audio/mpeg');
+//     res.sendFile(file);
+// });
 
   
 // app.post('/upload',upload.single('agentaudio'),(req,res)=>{
@@ -57,8 +58,16 @@ app.get('/:filename', (req, res) => {
 //     console.log(req.file);
 // })
 app.get("/test",(req,res) =>{
-    res.status(201).json({message:"test!"})
+    res.status(202).json({message:"test!"})
 })
+
+// app.get("/",(req,res) =>{
+//     try{
+//         res.status(202).json({message:"listening!"})
+//     }catch(err){
+//         res.status(500).json({message:err})
+//     }
+// })
 
 // app.use(express.static(path.join(__dirname,'..','bicdashboard','build')))
 // app.get('*',(req,res) => {

@@ -1,5 +1,7 @@
 const User = require('../model/user')
 const teamlead = require('../model/TeamLead')
+const escalation = require('../model/Escalation')
+const evaluation = require('../model/Evaluation')
 const jwt = require("jsonwebtoken")
 
 exports.userRegister=async(req,res) =>{
@@ -23,10 +25,10 @@ exports.login = async (req,res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'User not found',success:false });
         }
         if (user.password !== password) {
-            return res.status(401).json({ message: 'Invalid password' });
+            return res.status(401).json({ message: 'Invalid password',success:false});
         }
         const token = jwt.sign({
             _id: user._id,
@@ -43,7 +45,7 @@ exports.login = async (req,res) => {
 
 exports.fetchUser = async (req,res) => {
     try{
-        const user  = await User.find({role:{$ne:'admin'}}).select('-password').populate('evaluationRating')
+        const user  = await User.find().select('-password').populate('evaluationRating')
         res.status(200).json({user,success:true})
     }catch(error){
         console.error('Error during login:', error);
@@ -69,6 +71,16 @@ exports.fetchUserById = async (req,res) => {
         });
         counts['total'] = counts.average+counts.good+counts.bad
         res.status(200).json({user,counts,success:true})
+    }catch(error){
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+exports.getUserDetails = async (req,res) => {
+    try{
+        const escaltionDetails = await escalation.find({agentName:`${req.params.name}`})
+        const evaluationDetails = await evaluation.find({agentName:`${req.params.name}`})
+        res.status(200).json({esc:escaltionDetails,ev:evaluationDetails})
     }catch(error){
         res.status(500).json({ message: 'Internal server error' });
     }
