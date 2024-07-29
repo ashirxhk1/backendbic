@@ -46,11 +46,11 @@ app.get('/fetchleaders',auth,fetchTeamLead)
 app.get('/fetchuserbyid/:id',fetchUserById)
 app.get('/getuserdata/:name',auth,getUserDetails)
 
-// app.get('/:filename', (req, res) => {
-//     const file = path.join(__dirname, 'uploads', req.params.filename);
-//     res.setHeader('Content-Type', 'audio/mpeg');
-//     res.sendFile(file);
-// });
+app.get('/:filename', (req, res) => {
+    const file = path.join(__dirname, 'uploads', req.params.filename);
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.sendFile(file);
+});
 
   
 // app.post('/upload',upload.single('agentaudio'),(req,res)=>{
