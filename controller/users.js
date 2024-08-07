@@ -4,7 +4,7 @@ const escalation = require('../model/Escalation')
 const evaluation = require('../model/Evaluation')
 const jwt = require("jsonwebtoken")
 
-exports.userRegister=async(req,res) =>{
+exports.userRegister=async(req,res) => {
     try {
         const data = {
             email:req.body.email,
@@ -24,6 +24,7 @@ exports.login = async (req,res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
+       
         if (!user) {
         return res.status(404).json({ message: 'User not found',success:false });
         }

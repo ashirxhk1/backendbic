@@ -5,11 +5,22 @@ const {userRegister,login,logout,addLeader,deleteLeader,fetchTeamLead,fetchUser,
 const {escalation} = require("./controller/escalation")
 const {evaluation} = require("./controller/evaluation")
 const {auth} = require('./middleware/auth')
+const {notification,getNotification} = require('./controller/notification')
 const parser = require("cookie-parser")
 const cors = require("cors")
 const multer  = require('multer')
 const path = require('path');
-// const upload = multer({ dest: 'uploads/' })
+const socket = require('socket.io')
+const http = require('http')
+
+const server = http.createServer(app)
+const io = socket(server,{
+    cors:{
+        origin:'http://localhost:3000',
+        methods:['GET','POST'],
+        credentials:true
+    }
+})
 
 require("dotenv").config()
 mongoose.connect(process.env.mongo_db_url).then(
@@ -45,14 +56,41 @@ app.delete('/leaddelete/:id',auth,deleteLeader)
 app.get('/fetchleaders',auth,fetchTeamLead)
 app.get('/fetchuserbyid/:id',fetchUserById)
 app.get('/getuserdata/:name',auth,getUserDetails)
+app.get('/notification',auth,getNotification)
 
-app.get('/:filename', (req, res) => {
+app.get('/audio/:filename', (req, res) => {
     const file = path.join(__dirname, 'uploads', req.params.filename);
     res.setHeader('Content-Type', 'audio/mpeg');
     res.sendFile(file);
 });
 
-  
+let roomName = 'notification-Room'
+
+io.on('connection',(socket) => {
+    socket.on('join-room',(data) => {
+        socket.username = data.username
+        socket.join(roomName)
+        io.to(roomName).emit('user-connect',data.username + 'join the room' + roomName)
+        // console.log(data.username + 'join the room' + roomName)
+    })
+
+    socket.on('sent-notification',async (data) => {
+        console.log(`notification sent ${JSON.stringify(data)}`)
+        try {
+            const userRes = await notification(data) 
+            io.to(data.userRoom).emit('receive-notification', userRes)
+        } catch (error) {
+            console.error("Error sending notification:", error)
+        }
+    })
+
+    socket.on('start-message',(data) => {
+        console.log(data)
+    })
+
+})
+
+
 // app.post('/upload',upload.single('agentaudio'),(req,res)=>{
 //     console.log(req.body);
 //     console.log(req.file);
@@ -74,7 +112,7 @@ app.get("/test",(req,res) =>{
 //     res.sendFile(path.join(__dirname,'..','bicdashboard','build','index.html'))
 // })
 
-app.listen(8000,()=>{
+server.listen(8000,()=>{
     console.log('server is running')
 })
 
