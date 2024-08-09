@@ -81,7 +81,19 @@ exports.getUserDetails = async (req,res) => {
     try{
         const escaltionDetails = await escalation.find({agentName:`${req.params.name}`})
         const evaluationDetails = await evaluation.find({agentName:`${req.params.name}`})
-        res.status(200).json({esc:escaltionDetails,ev:evaluationDetails})
+        const counts = {
+            average: 0,
+            good: 0,
+            bad: 0,
+            total:0
+        };
+
+        escaltionDetails.forEach(entry => {
+            counts[entry.userrating]++;
+            counts['total']=counts.average+counts.good+counts.bad
+        });
+
+        res.status(200).json({esc:escaltionDetails,ev:evaluationDetails,counts,success:true})
     }catch(error){
         res.status(500).json({ message: 'Internal server error' });
     }
